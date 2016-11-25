@@ -118,7 +118,10 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
             index = getListIndex(parameter, list.size());
             if (null != index) {
                 Object itemFromList = list.get(index);
-                if (null != itemFromList) {
+
+                if (StringUtils.isEmpty(rest) && shouldRemove){
+                    return list.remove(index.intValue());
+                }else if (null != itemFromList) {
 
                     Object obj = resolveToMap(itemFromList);
                     if (obj instanceof Map){
@@ -294,21 +297,4 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         return alertSubjectResult;
 
     }
-
-
-
-    /*protected String getLastArgumentFieldName(String argumentFullPath) {
-        String normalized = normalizePath(argumentFullPath);
-        String valueKeyInList = normalized;
-        if (normalized.contains(".")) {
-            valueKeyInList = normalized.substring(normalized.lastIndexOf(".") + 1);
-            if (valueKeyInList.contains("]")) {
-                valueKeyInList = valueKeyInList.substring(valueKeyInList.lastIndexOf("]"));
-                if (StringUtils.isEmpty(valueKeyInList)) {
-                    valueKeyInList = valueKeyInList.substring(0, valueKeyInList.indexOf("["));
-                }
-            }
-        }
-        return valueKeyInList;
-    }*/
 }
