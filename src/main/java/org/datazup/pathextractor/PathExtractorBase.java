@@ -249,43 +249,15 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     }
 
 
-    public Object compileString(String dataItem) throws IOException {
+    public Object compileString(String expression) throws IOException {
 
-        if (dataItem.contains(Handlebars.DELIM_START) && dataItem.contains(Handlebars.DELIM_END)) {
-            return renderTemplate(dataItem);
+        if (expression.contains(Handlebars.DELIM_START) && expression.contains(Handlebars.DELIM_END)) {
+            return renderTemplate(expression);
         }else{
-            Object o = extractObjectValue(dataItem);
-            return o;
-
-               /*
-            if (o instanceof String){
+            Object o = extractObjectValue(expression);
+            if (null!=o)
                 return o;
-            }else{
-                Object obj = resolveToMap(o);
-                if (null!=obj && obj instanceof Map)
-                    return obj;
-                obj = resolveToList(o);
-                if (null!=obj && obj instanceof List){
-                    return obj;
-                }
-                return JsonUtils.getJsonFromObject(o);
-
-
-            }
-
-*/
-
-            /*if (o instanceof String){
-                return (String)o;
-            }else if (o instanceof JsonObject || o instanceof JsonArray){
-                return o;
-            }else if (o instanceof Map){
-                return new JsonObject((Map)o);
-            }else if (o instanceof List){
-                return new JsonArray((List)o);
-            }else{
-                return JsonUtils.getJsonFromObject(o);
-            }*/
+            return expression;
         }
 
     }

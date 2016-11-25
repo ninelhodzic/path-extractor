@@ -1,4 +1,4 @@
-package com.alerter.javulator.pathextractor;
+package org.datazup.pathextractor;
 
 
 import org.junit.Assert;
@@ -24,11 +24,11 @@ public class PathExtractorTest extends ExtractorTestBase {
 
     @Test
     public void itCompilesReturnString() throws IOException {
-        String strToCompile = "child.name";
+        String strToCompile = "neki text";
         Object compiled = pathExtractor.compileString(strToCompile);
         Assert.assertNotNull(compiled);
         Assert.assertTrue(compiled instanceof String);
-        Assert.assertTrue(((String)compiled).equals("child.name"));
+        Assert.assertTrue(((String)compiled).equals("neki text"));
     }
 
     @Test

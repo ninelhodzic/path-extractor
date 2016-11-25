@@ -1,6 +1,5 @@
-package com.alerter.javulator.pathextractor;
+package org.datazup.pathextractor;
 
-import org.datazup.pathextractor.PathExtractor;
 import org.datazup.utils.DateTimeUtils;
 import org.datazup.utils.JsonUtils;
 import org.datazup.utils.Tuple;

@@ -1,4 +1,4 @@
-package com.alerter.javulator.pathextractor;
+package org.datazup.pathextractor;
 
 import org.datazup.pathextractor.PathExtractor;
 import org.joda.time.DateTime;
