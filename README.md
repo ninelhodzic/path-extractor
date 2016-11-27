@@ -10,7 +10,7 @@ map.put("name", "value");
 Map<String,Object> mapChild = new HashMap<>();
 map.put("child", 10);
 
-String expression = "$name.child$" // or expression="name.child";
+String expression = "$name.child$" // note: $ is used as separator for property.name
 PathExtractor pathExtractor = new PathExtractor(map);
 Number val = pathExtractor.evaluate(expression);
 
