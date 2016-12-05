@@ -1,7 +1,6 @@
 package org.datazup.pathextractor;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -76,16 +75,12 @@ public class PathExtractor extends PathExtractorBase {
         if (null == inputMap) return null;
 
         Map<String, Object> extractedMap = new HashMap<>();
-        Iterator<Map.Entry<String, Object>> iterator = inputMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, Object> entry = iterator.next();
-            if (fields.contains(entry.getKey())) {
-                extractedMap.put(entry.getKey(), entry.getValue());
-                if (shouldRemove)
-                    iterator.remove();
-            }
-        }
 
+        for (String field: fields){
+           Object val = extractObjectValue(inputMap,field, shouldRemove, false);
+            String normalizedField = normalizePath(field);
+            extractedMap.put(normalizedField, val);
+        }
         return extractedMap;
     }
 }

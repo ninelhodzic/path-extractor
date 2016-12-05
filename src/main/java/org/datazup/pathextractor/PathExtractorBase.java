@@ -23,11 +23,17 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     public abstract List resolveToList(Object o);
     public abstract Map<String,Object> getDataObject();
 
-    public List<Object> extractObjectList(String listChildPath) {
-        return (List<Object>) extractObjectValue(listChildPath);
-    }
 
     public Object extractObjectValue(Map<String, Object> objMap, String path) {
+        if (path.contains(Handlebars.DELIM_START) && path.contains(Handlebars.DELIM_END)) {
+            try {
+                Object o = compileString(objMap, path);
+                return o;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
         return extractObjectValue(objMap, path, false, false);
     }
 
@@ -253,22 +259,35 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
 
 
     public Object compileString(String expression) throws IOException {
+        return compileString(getDataObject(), expression);
+    }
+
+    public Object compileString(Map<String,Object> dataObject, String expression) throws IOException {
 
         if (expression.contains(Handlebars.DELIM_START) && expression.contains(Handlebars.DELIM_END)) {
-            return renderTemplate(expression);
+            return renderTemplate(dataObject, expression);
         }else{
-            Object o = extractObjectValue(expression);
+            Object o = extractObjectValue(dataObject, expression);
             if (null!=o)
                 return o;
             return expression;
         }
-
     }
 
     public String renderTemplate(String item) throws IOException {
 
-        Template tmpl = handlerBarRenderer.getNext().compileInline(item);
+       /* Template tmpl = handlerBarRenderer.getNext().compileInline(item);
         String alertSubjectResult = tmpl.apply(getDataObject());
+        return alertSubjectResult;*/
+
+        return renderTemplate(getDataObject(), item);
+
+    }
+
+    public String renderTemplate(Map<String,Object> dataObject, String item) throws IOException {
+
+        Template tmpl = handlerBarRenderer.getNext().compileInline(item);
+        String alertSubjectResult = tmpl.apply(dataObject);
         return alertSubjectResult;
 
     }
