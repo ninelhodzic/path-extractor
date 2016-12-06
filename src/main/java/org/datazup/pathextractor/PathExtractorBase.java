@@ -53,17 +53,6 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
                 Map resolvedMap = resolveToMap(keyObj);
                 Object obj = extractObjectValue(resolvedMap, rest, shouldRemove, returnRowMap);
                 return obj;
-                /*
-                if (keyObj instanceof Map) {
-                    Object obj = extractObjectValue((Map) keyObj, rest, shouldRemove, returnRowMap);
-                    return obj;
-                } else if (keyObj instanceof JsonObject) {
-                    JsonObject jsonObject = (JsonObject) keyObj;
-                    Object obj = extractObjectValue(jsonObject.getMap(), rest, shouldRemove, returnRowMap);
-                    return obj;
-                } else {
-                    // do we need to throw error?
-                }*/
             } else if (key.endsWith("]")) {
                 return handleListParenthesisExtraction(objMap, path, shouldRemove, returnRowMap);
             }
@@ -231,7 +220,8 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
                 }
             } else {
                 if (map.containsKey(rest)) {
-                    listOfObjects.add(map);
+                    Object o = map.get(rest);
+                    listOfObjects.add(o);
                 }
             }
         }
