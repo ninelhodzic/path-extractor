@@ -8,6 +8,7 @@ import org.datazup.template.engine.HandlerBarRenderer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -173,7 +174,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         // return null;
     }
 
-    private Object extractFieldValues(List<Map<String, Object>> list, String rest, boolean shouldRemove, boolean returnRowMap) {
+    private Object extractFieldValues(List<Object> list, String rest, boolean shouldRemove, boolean returnRowMap) {
         List<Object> listOfObjects = new ArrayList<>();
         if (StringUtils.isEmpty(rest)) {
             return list;
@@ -181,9 +182,12 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         if (list.size()==0)
             return null;
 
-        for (Map<String, Object> map : list) {
-            /*Object extracted = extractObjectValue(map,rest,shouldRemove);
-            listOfObjects.add(extracted);*/
+        Iterator<Object> iter = list.iterator();
+
+        while(iter.hasNext()){
+            Object objInList = iter.next();
+            Map<String,Object> map =  resolveToMap(objInList);
+
             if (rest.contentEquals(".") || rest.contains("]")) {
                 // need to extract further
                 Object restObj = extractObjectValue(map, rest, shouldRemove, returnRowMap);
@@ -201,22 +205,6 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
                             return restObj;
                         }
                     }
-
-                    /*if (restObj instanceof Map) {
-                        Map m = (Map) restObj;
-                        if (m.containsKey(rest) && null != m.get(rest)) {
-                            listOfObjects.add(restObj);
-                        }
-                    } else if (restObj instanceof JsonObject) {
-                        Map m = ((JsonObject) restObj).getMap();
-                        if (m.containsKey(rest) && null != m.get(rest)) {
-                            listOfObjects.add(m);
-                        }
-                    } else if (restObj instanceof List) {
-                        return restObj;
-                    } else if (restObj instanceof JsonArray) {
-                        return ((JsonArray) restObj).getList();
-                    }*/
                 }
             } else {
                 if (map.containsKey(rest)) {
@@ -225,6 +213,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
                 }
             }
         }
+
         return listOfObjects;
     }
 
@@ -238,7 +227,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         return index;
     }
 
-    public String normalizePath(String path) {
+    public static String normalizePath(String path) {
         if (null==path || path.isEmpty()) return path;
 
         if (path.startsWith("$") && path.endsWith("$")) {
