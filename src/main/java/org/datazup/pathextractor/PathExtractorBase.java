@@ -33,7 +33,6 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
         return extractObjectValue(objMap, path, false, false);
     }
