@@ -22,6 +22,8 @@ public class PathExtractorTest extends ExtractorTestBase {
         //Assert.assertTrue(compiled.equals("hello "));
     }
 
+
+
     @Test
     public void itCompilesReturnString() throws IOException {
         String strToCompile = "neki text";
@@ -45,6 +47,18 @@ public class PathExtractorTest extends ExtractorTestBase {
 
 
         //Assert.assertTrue(compiled.equals("hello "));
+    }
+
+    @Test
+    public void isCompileHtmlString() throws IOException {
+        String strToCompile = "<html> ovo je moj text {{child.name}} </html>";
+        Object compiled = pathExtractor.compileString(strToCompile);
+
+        Assert.assertNotNull(compiled);
+        Assert.assertTrue(compiled instanceof String);
+        Assert.assertTrue(((String)compiled).startsWith("<html>"));
+        Assert.assertTrue(((String)compiled).endsWith("</html>"));
+        Assert.assertFalse(((String)compiled).contains("{{"));
     }
 
     @Test
