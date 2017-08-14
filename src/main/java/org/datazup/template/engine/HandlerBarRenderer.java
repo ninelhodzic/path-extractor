@@ -48,6 +48,8 @@ public class HandlerBarRenderer {
         public HandlebarsWrapper build() {
             Handlebars engine =  new Handlebars();
 
+
+
             engine.registerHelper("json", new Helper<Object>() {
                 @Override
                 public CharSequence apply(Object o, Options options) throws IOException {
