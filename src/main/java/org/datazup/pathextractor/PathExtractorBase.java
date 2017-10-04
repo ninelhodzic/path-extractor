@@ -37,6 +37,32 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         return extractObjectValue(objMap, path, false, false);
     }
 
+    public void update(Map<String, Object> objMap,String path, Object value) {
+        path = normalizePath(path);
+        // find field and update the data - last part can be: fieldName, indexInList, lastItemInList
+        if (path.contains(".")){
+
+            String key = path.substring(0, path.indexOf("."));
+            String rest = path.substring(path.indexOf(".") + 1, path.length());
+            if (objMap.containsKey(key)) {
+                Object keyObj = objMap.get(key);
+                Map resolvedMap = resolveToMap(keyObj);
+                update(resolvedMap, rest, value);
+                return;
+            }else if (key.endsWith("]")){
+                updateExtractedParenthesisList(objMap, path, value);
+                return;
+            }
+        }else if (path.contains("]")){
+            updateExtractedParenthesisList(objMap, path, value);
+            return;
+        }else{
+            objMap.put(path, value);
+        }
+    }
+
+
+
     public Object extractObjectValue(Map<String, Object> objMap, String path, boolean shouldRemove, boolean returnRowMap) {
         if (null == objMap || null == path || path.isEmpty()) return objMap;
 
@@ -76,6 +102,58 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         return null;
     }
 
+    private void updateExtractedParenthesisList(Map<String, Object> objMap, String path, Object value) {
+        if (path.contains("]")) {
+            String listKey = path.substring(0, path.indexOf("["));
+            String parameter = path.substring(path.indexOf("[") + 1, path.indexOf("]"));
+            String rest = path.substring(path.indexOf("]") + 1, path.length());
+            if (rest.startsWith(".")) {
+                rest = rest.substring(1, rest.length());
+            }
+            // we need to escape '.' dot after ] (sample is: list[0].item
+            if (objMap.containsKey(listKey)) {
+
+                Object listObj = objMap.get(listKey);
+                List list = resolveToList(listObj);
+                updateInList(list, objMap, listKey, parameter, rest, value);
+            }
+
+        }
+    }
+
+    private void updateInList(List list, Map<String, Object> objMap, String listKey, String parameter, String rest, Object value) {
+        if (null!=list){
+            Integer index = null;
+            if (StringUtils.isNotEmpty(parameter)) {
+                index = getListIndex(parameter, list.size());
+                if (null != index) {
+                    if (StringUtils.isEmpty(rest)){
+                        list.set(index, value);
+                    }else if (!StringUtils.isEmpty(listKey)){
+                        Object itemFromList = list.get(index);
+                        if (null!=itemFromList){
+                            Object obj = resolveToMap(itemFromList);
+                            if (obj instanceof Map){
+                                update((Map<String, Object>) obj, rest, value);
+                            }else{
+                                obj = resolveToList(itemFromList);
+                                if (obj instanceof List) {
+                                    updateExtractedParenthesisList(objMap, rest, value);
+                                }
+                            }
+                        }
+                    }else {
+                        // is there such case???
+                    }
+                }
+            }else{
+                if (StringUtils.isEmpty(rest)){
+                    objMap.put(listKey, value);
+                }
+            }
+        }
+    }
+
     private Object handleListParenthesisExtraction(Map<String, Object> objMap, String path, boolean shouldRemove, boolean returnRowMap) {
         if (path.contains("]")) {
             String listKey = path.substring(0, path.indexOf("["));
@@ -91,17 +169,6 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
 
                 Object res = handleReturnFromList(list, objMap, listKey, parameter, rest, shouldRemove, returnRowMap);
                 return res;
-
-                /*if (listObj instanceof List) {
-                    List list = (List) listObj;
-                    Object res = handleReturnFromList(list, objMap, listKey, parameter, rest, shouldRemove, returnRowMap);
-                    return res;
-                } else if (listObj instanceof JsonArray) {
-                    JsonArray list = (JsonArray) listObj;
-                    List lst = list.getList();
-                    Object res = handleReturnFromList(lst, objMap, listKey, parameter, rest, shouldRemove, returnRowMap);
-                    return res;
-                }*/
             }
         }
         return null;
@@ -131,18 +198,6 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
                         }
                     }
 
-                  /*  if (itemFromList instanceof Map) {
-                        return extractObjectValue((Map) itemFromList, rest, shouldRemove, returnRowMap);
-                    } else if (itemFromList instanceof JsonObject) {
-                        return extractObjectValue(((JsonObject) itemFromList).getMap(), rest, shouldRemove, returnRowMap);
-                    } else if (itemFromList instanceof List) {
-                        Object o = extractFieldValues((List) itemFromList, rest, shouldRemove, returnRowMap);
-                        return o;
-                    } else if (itemFromList instanceof JsonArray) {
-                        JsonArray jsonArray = (JsonArray) itemFromList;
-                        Object o = extractFieldValues(jsonArray.getList(), rest, shouldRemove, returnRowMap);
-                        return o;
-                    }*/
                 } else {
                     if (returnRowMap) {
                         return list;

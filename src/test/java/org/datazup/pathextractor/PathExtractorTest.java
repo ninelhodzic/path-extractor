@@ -204,5 +204,18 @@ public class PathExtractorTest extends ExtractorTestBase {
         Assert.assertNotNull(obj);
     }
 
+    @Test
+    public void itExtractListLastObjectWithFieldInMapChildInListInLastMapListLastUpdate(){
+        String path = "$child.list[last].third.thirdlist[last]$";
+        Object obj = pathExtractor.extractObjectValue(path);
+        Assert.assertNotNull(obj);
+
+        pathExtractor.update("child.list[last].third.thirdlist[last]", null);
+
+        path = "$child.list[last].third.thirdlist[last]$";
+        obj = pathExtractor.extractObjectValue(path);
+        Assert.assertNull(obj);
+    }
+
 }
 

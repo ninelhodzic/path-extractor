@@ -83,4 +83,9 @@ public class PathExtractor extends PathExtractorBase {
         }
         return extractedMap;
     }
+
+    public void update(String fixedFieldName, Object result){
+        update(this.objectMap, fixedFieldName, result);
+    }
+
 }
