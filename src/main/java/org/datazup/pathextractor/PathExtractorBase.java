@@ -126,6 +126,8 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
                         if (obj instanceof List) {
                             Object o = extractFieldValues((List) obj, rest, shouldRemove, returnRowMap);
                             return o;
+                        }else{
+                            return itemFromList;
                         }
                     }
 
