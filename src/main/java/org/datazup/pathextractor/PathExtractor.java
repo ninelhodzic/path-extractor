@@ -11,8 +11,9 @@ public class PathExtractor extends PathExtractorBase {
     protected Map<String, Object> objectMap;
 
     public PathExtractor(){}
-    public PathExtractor(Map<String, Object> objectMap) {
+    public PathExtractor(Map<String, Object> objectMap, AbstractMapListResolver mapListResolver) {
           this.objectMap = objectMap;
+          this.setMapListResolver(mapListResolver);
     }
 
   /*  public Map<String, Object> getObjectMap() {
@@ -22,7 +23,6 @@ public class PathExtractor extends PathExtractorBase {
     @Override
     public boolean containsKey(String str) {
         if (null == this.objectMap) return false;
-
         return this.objectMap.containsKey(str);
     }
 
@@ -33,21 +33,6 @@ public class PathExtractor extends PathExtractorBase {
 
     public Object extractObjectValue(String path) {
         return extractObjectValue(objectMap, path);
-    }
-
-    @Override
-    public Map resolveToMap(Object o) {
-        if (o instanceof Map)
-            return (Map)o;
-        return null;
-    }
-
-    @Override
-    public List resolveToList(Object o) {
-        if(o instanceof List)
-            return (List)o;
-
-        return null;
     }
 
     @Override

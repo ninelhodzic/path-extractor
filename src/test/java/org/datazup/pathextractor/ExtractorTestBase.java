@@ -1,6 +1,5 @@
 package org.datazup.pathextractor;
 
-import org.datazup.pathextractor.PathExtractor;
 import org.joda.time.DateTime;
 import org.junit.Before;
 
@@ -91,6 +90,6 @@ public class ExtractorTestBase {
 
     @Before
     public void init(){
-        pathExtractor = new PathExtractor(getData());
+        pathExtractor = new PathExtractor(getData(), new SimpleMapListResolver());
     }
 }
