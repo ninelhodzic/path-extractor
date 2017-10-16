@@ -22,6 +22,20 @@ public class PathExtractorTest extends ExtractorTestBase {
         //Assert.assertTrue(compiled.equals("hello "));
     }
 
+    @Test
+    public void isNewHelpersWorking() throws IOException {
+        String strToCompile = "";
+        strToCompile+=" {{#IFB (COMPARE child.name '==' 'child') }} ";
+        strToCompile+=" THIS IS Child name {{child.name}} ";
+        strToCompile+=" {{else}} ";
+        strToCompile+=" THIS IS NOT CHID NAME ";
+        strToCompile+=" {{/IFB}}";
+        Object compiled = pathExtractor.compileString(strToCompile);
+        Assert.assertNotNull(compiled);
+        Assert.assertTrue(compiled instanceof String);
+        System.out.println(compiled);
+        Assert.assertTrue(((String)compiled).trim().equals("THIS IS Child name child"));
+    }
 
 
     @Test

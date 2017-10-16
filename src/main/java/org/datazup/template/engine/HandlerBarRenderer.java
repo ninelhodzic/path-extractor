@@ -1,9 +1,7 @@
 package org.datazup.template.engine;
 
 
-import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.Helper;
-import com.github.jknack.handlebars.Options;
+import com.github.jknack.handlebars.*;
 import org.datazup.ring.IObjectBuilder;
 import org.datazup.ring.LoadBalancedInstanceAccessor;
 import org.datazup.utils.JsonUtils;
@@ -48,8 +46,31 @@ public class HandlerBarRenderer {
         public HandlebarsWrapper build() {
             Handlebars engine =  new Handlebars();
 
+            engine.registerHelpers(org.beryx.hbs.Helpers.class);
 
 
+/*            engine.registerHelper("compare", new Helper<Object>() {
+                @Override
+                public CharSequence apply(Object context, Options options) throws IOException {
+                    if (options.params.length < 3){
+                        throw new RuntimeException("Handlebars compare needs 2 parameters");
+                    }
+                    Object operator =  options.hash.get("operator");
+
+                    return null;
+                }
+            });*/
+
+            engine.registerHelper("isNull", new Helper<Object>() {
+                @Override
+                public CharSequence apply(Object o, Options options) throws IOException {
+                    if (null==o){
+                        return "";
+                    }else{
+                        return options.apply(options.fn);
+                    }
+                }
+            });
             engine.registerHelper("json", new Helper<Object>() {
                 @Override
                 public CharSequence apply(Object o, Options options) throws IOException {
