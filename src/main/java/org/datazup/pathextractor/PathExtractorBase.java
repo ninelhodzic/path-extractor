@@ -181,7 +181,12 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         if (StringUtils.isNotEmpty(parameter)) {
             index = getListIndex(parameter, list.size());
             if (null != index) {
-                Object itemFromList = list.get(index);
+                Object itemFromList = null;
+                if (list.size()>index){
+                    itemFromList = list.get(index);
+                }else{
+                    return itemFromList;
+                }
 
                 if (StringUtils.isEmpty(rest) && shouldRemove){
                     return list.remove(index.intValue());
