@@ -1,5 +1,7 @@
 package org.datazup.pathextractor;
 
+import org.datazup.exceptions.PathExtractorException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +12,19 @@ import java.util.Map;
 public class PathExtractor extends PathExtractorBase {
     protected Map<String, Object> objectMap;
 
-    public PathExtractor(){}
-    public PathExtractor(Map<String, Object> objectMap, AbstractMapListResolver mapListResolver) {
-          this.objectMap = objectMap;
-          this.setMapListResolver(mapListResolver);
+    public PathExtractor() {
+    }
+
+    public PathExtractor(Object objectMap, AbstractMapListResolver mapListResolver) {
+        if (null == objectMap)
+            objectMap = new HashMap<>();
+
+        Map<String, Object> map = mapListResolver.resolveDeepMap(objectMap);
+        if (null == map) {
+            throw new PathExtractorException("Provided object is not of type Map - wrong type is: "+objectMap.getClass().getName());
+        }
+        this.objectMap = map;
+        this.setMapListResolver(mapListResolver);
     }
 
   /*  public Map<String, Object> getObjectMap() {
@@ -61,15 +72,15 @@ public class PathExtractor extends PathExtractorBase {
 
         Map<String, Object> extractedMap = new HashMap<>();
 
-        for (String field: fields){
-           Object val = extractObjectValue(inputMap,field, shouldRemove, false);
+        for (String field : fields) {
+            Object val = extractObjectValue(inputMap, field, shouldRemove, false);
             String normalizedField = normalizePath(field);
             extractedMap.put(normalizedField, val);
         }
         return extractedMap;
     }
 
-    public void update(String fixedFieldName, Object result){
+    public void update(String fixedFieldName, Object result) {
         update(this.objectMap, fixedFieldName, result);
     }
 
