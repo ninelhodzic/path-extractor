@@ -15,7 +15,7 @@ public class PathExtractor extends PathExtractorBase {
     public PathExtractor() {
     }
 
-    public PathExtractor(Object objectMap, AbstractMapListResolver mapListResolver) {
+    public PathExtractor(Object objectMap, AbstractResolverHelper mapListResolver) {
         if (null == objectMap)
             objectMap = new HashMap<>();
 

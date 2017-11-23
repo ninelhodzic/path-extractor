@@ -90,6 +90,6 @@ public class ExtractorTestBase {
 
     @Before
     public void init(){
-        pathExtractor = new PathExtractor(getData(), new SimpleMapListResolver());
+        pathExtractor = new PathExtractor(getData(), new SimpleResolverHelper());
     }
 }

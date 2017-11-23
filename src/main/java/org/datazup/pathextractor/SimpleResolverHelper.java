@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by ninel on 7/3/17.
  */
-public class SimpleMapListResolver extends AbstractMapListResolver {
+public class SimpleResolverHelper extends AbstractResolverHelper {
     @Override
     public Map resolveToMap(Object o) {
         if (o instanceof Map)

@@ -24,7 +24,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     //public abstract List resolveToList(Object o);
     public abstract Map<String,Object> getDataObject();
     //public abstract Map resolveDeepMap(Map dataObject);
-    private AbstractMapListResolver mapListResolver;
+    private AbstractResolverHelper mapListResolver;
 
 
     public Object extractObjectValue(Map<String, Object> objMap, String path) {
@@ -338,11 +338,11 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
 
     }
 
-    public AbstractMapListResolver getMapListResolver() {
+    public AbstractResolverHelper getMapListResolver() {
         return mapListResolver;
     }
 
-    public void setMapListResolver(AbstractMapListResolver mapListResolver) {
+    public void setMapListResolver(AbstractResolverHelper mapListResolver) {
         this.mapListResolver = mapListResolver;
     }
 }

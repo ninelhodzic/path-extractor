@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by ninel on 7/3/17.
  */
-public abstract class AbstractMapListResolver {
+public abstract class AbstractResolverHelper {
 
     public abstract Map resolveToMap(Object o);
     public abstract List resolveToList(Object o);
