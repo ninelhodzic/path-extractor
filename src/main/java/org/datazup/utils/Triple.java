@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * Created by ninel on 4/26/16.
+ * Created by admin@datazup on 4/26/16.
  */
 public class Triple <F, S, T> {
     private F first;

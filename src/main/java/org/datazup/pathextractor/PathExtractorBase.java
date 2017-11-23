@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by ninel on 7/23/16.
+ * Created by admin@datazup on 7/23/16.
  */
 public abstract class PathExtractorBase implements AbstractVariableSet {
 

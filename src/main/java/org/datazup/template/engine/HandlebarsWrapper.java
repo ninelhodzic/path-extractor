@@ -4,7 +4,7 @@ import com.github.jknack.handlebars.Handlebars;
 import org.datazup.ring.IClosableWrapper;
 
 /**
- * Created by ninel on 11/24/16.
+ * Created by admin@datazup on 11/24/16.
  */
 public class HandlebarsWrapper implements IClosableWrapper<Handlebars> {
     private Handlebars handlebars;

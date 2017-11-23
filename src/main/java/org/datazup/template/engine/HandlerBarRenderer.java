@@ -9,7 +9,7 @@ import org.datazup.utils.JsonUtils;
 import java.io.IOException;
 
 /**
- * Created by ninel on 7/23/16.
+ * Created by admin@datazup on 7/23/16.
  */
 public class HandlerBarRenderer {
 

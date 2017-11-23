@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by ninel on 4/28/16.
+ * Created by admin@datazup on 4/28/16.
  * http://stackoverflow.com/questions/1050991/singleton-with-arguments-in-java
  */
 public class LoadBalancedInstanceAccessor<T extends IClosableWrapper<?>> {

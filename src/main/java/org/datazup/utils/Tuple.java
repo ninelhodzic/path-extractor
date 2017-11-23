@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * Created by ninel on 11/25/16.
+ * Created by admin@datazup on 11/25/16.
  */
 
 public class Tuple<T, D> {

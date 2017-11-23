@@ -3,7 +3,7 @@ package org.datazup.utils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
- * Created by ninel on 11/21/17.
+ * Created by admin@datazup on 11/21/17.
  */
 public class TypeUtils {
     public static Number resolveNumber(Object o){
