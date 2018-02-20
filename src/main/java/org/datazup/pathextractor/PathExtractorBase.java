@@ -20,9 +20,11 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     HandlerBarRenderer handlerBarRenderer = new HandlerBarRenderer();
 
     public abstract Object extractObjectValue(String path);
+
     //public abstract Map resolveToMap(Object o);
     //public abstract List resolveToList(Object o);
-    public abstract Map<String,Object> getDataObject();
+    public abstract Map<String, Object> getDataObject();
+
     //public abstract Map resolveDeepMap(Map dataObject);
     private AbstractResolverHelper mapListResolver;
 
@@ -39,10 +41,10 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         return extractObjectValue(objMap, path, false, false);
     }
 
-    public void update(Map<String, Object> objMap,String path, Object value) {
+    public void update(Map<String, Object> objMap, String path, Object value) {
         path = normalizePath(path);
         // find field and update the data - last part can be: fieldName, indexInList, lastItemInList
-        if (path.contains(".")){
+        if (path.contains(".")) {
 
             String key = path.substring(0, path.indexOf("."));
             String rest = path.substring(path.indexOf(".") + 1, path.length());
@@ -51,18 +53,17 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
                 Map resolvedMap = mapListResolver.resolveToMap(keyObj);
                 update(resolvedMap, rest, value);
                 return;
-            }else if (key.endsWith("]")){
+            } else if (key.endsWith("]")) {
                 updateExtractedParenthesisList(objMap, path, value);
                 return;
             }
-        }else if (path.contains("]")){
+        } else if (path.contains("]")) {
             updateExtractedParenthesisList(objMap, path, value);
             return;
-        }else{
+        } else {
             objMap.put(path, value);
         }
     }
-
 
 
     public Object extractObjectValue(Map<String, Object> objMap, String path, boolean shouldRemove, boolean returnRowMap) {
@@ -124,32 +125,32 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     }
 
     private void updateInList(List list, Map<String, Object> objMap, String listKey, String parameter, String rest, Object value) {
-        if (null!=list){
+        if (null != list) {
             Integer index = null;
             if (StringUtils.isNotEmpty(parameter)) {
                 index = getListIndex(parameter, list.size());
                 if (null != index) {
-                    if (StringUtils.isEmpty(rest)){
+                    if (StringUtils.isEmpty(rest)) {
                         list.set(index, value);
-                    }else if (!StringUtils.isEmpty(listKey)){
+                    } else if (!StringUtils.isEmpty(listKey)) {
                         Object itemFromList = list.get(index);
-                        if (null!=itemFromList){
+                        if (null != itemFromList) {
                             Object obj = mapListResolver.resolveToMap(itemFromList);
-                            if (obj instanceof Map){
+                            if (obj instanceof Map) {
                                 update((Map<String, Object>) obj, rest, value);
-                            }else{
+                            } else {
                                 obj = mapListResolver.resolveToList(itemFromList);
                                 if (obj instanceof List) {
                                     updateExtractedParenthesisList(objMap, rest, value);
                                 }
                             }
                         }
-                    }else {
+                    } else {
                         // is there such case???
                     }
                 }
-            }else{
-                if (StringUtils.isEmpty(rest)){
+            } else {
+                if (StringUtils.isEmpty(rest)) {
                     objMap.put(listKey, value);
                 }
             }
@@ -182,25 +183,25 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
             index = getListIndex(parameter, list.size());
             if (null != index) {
                 Object itemFromList = null;
-                if (list.size()>index){
+                if (list.size() > index) {
                     itemFromList = list.get(index);
-                }else{
+                } else {
                     return itemFromList;
                 }
 
-                if (StringUtils.isEmpty(rest) && shouldRemove){
+                if (StringUtils.isEmpty(rest) && shouldRemove) {
                     return list.remove(index.intValue());
-                }else if (null != itemFromList) {
+                } else if (null != itemFromList) {
 
                     Object obj = mapListResolver.resolveToMap(itemFromList);
-                    if (obj instanceof Map){
+                    if (obj instanceof Map) {
                         return extractObjectValue((Map) obj, rest, shouldRemove, returnRowMap);
-                    }else {
+                    } else {
                         obj = mapListResolver.resolveToList(itemFromList);
                         if (obj instanceof List) {
                             Object o = extractFieldValues((List) obj, rest, shouldRemove, returnRowMap);
                             return o;
-                        }else{
+                        } else {
                             return itemFromList;
                         }
                     }
@@ -224,9 +225,9 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
 
         } else {
             if (shouldRemove) {
-                if (null==index){
+                if (null == index) {
                     return null;
-                }else{
+                } else {
                     Object removed = list.remove(index.intValue());
                     return removed;
                 }
@@ -242,38 +243,49 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         if (StringUtils.isEmpty(rest)) {
             return list;
         }
-        if (list.size()==0)
+        if (list.size() == 0)
             return null;
 
         Iterator<Object> iter = list.iterator();
 
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             Object objInList = iter.next();
-            Map<String,Object> map =  mapListResolver.resolveToMap(objInList);
 
-            if (rest.contentEquals(".") || rest.contains("]")) {
-                // need to extract further
-                Object restObj = extractObjectValue(map, rest, shouldRemove, returnRowMap);
-                if (null != restObj) {
+            if (null != rest && !rest.isEmpty()) {
 
-                    Object obj = mapListResolver.resolveToMap(restObj);
-                    if (null!=obj && obj instanceof Map){
-                        Map m = (Map) restObj;
-                        if (m.containsKey(rest) && null != m.get(rest)) {
-                            listOfObjects.add(restObj);
-                        }
-                    }else {
-                        obj = mapListResolver.resolveToList(restObj);
-                        if (null != obj && obj instanceof List) {
-                            return restObj;
-                        }
+
+                Map<String, Object> map = mapListResolver.resolveToMap(objInList);
+
+                if (rest.contains(".") || rest.contains("]")) {
+                    // need to extract further
+                    Object restObj = extractObjectValue(map, rest, shouldRemove, returnRowMap);
+                    if (null != restObj) {
+
+                        listOfObjects.add(restObj);
+
+//                        Object obj = mapListResolver.resolveToMap(restObj);
+//                        if (null != obj && obj instanceof Map) {
+//                            Map m = (Map) restObj;
+//                            if (m.containsKey(rest) && null != m.get(rest)) {
+//                                listOfObjects.add(restObj);
+//                            }
+//                        } else {
+//                            obj = mapListResolver.resolveToList(restObj);
+//                            if (null != obj && obj instanceof List) {
+//                                return restObj;
+//                            }else{
+//                                listOfObjects.ad
+//                            }
+//                        }
+                    }
+                } else {
+                    if (map.containsKey(rest)) {
+                        Object o = map.get(rest);
+                        listOfObjects.add(o);
                     }
                 }
             } else {
-                if (map.containsKey(rest)) {
-                    Object o = map.get(rest);
-                    listOfObjects.add(o);
-                }
+                listOfObjects.add(objInList);
             }
         }
 
@@ -291,7 +303,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     }
 
     public static String normalizePath(String path) {
-        if (null==path || path.isEmpty()) return path;
+        if (null == path || path.isEmpty()) return path;
 
         if (path.startsWith("$") && path.endsWith("$")) {
             path = path.substring(1, path.length() - 1);
@@ -305,19 +317,18 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         return compileString(map, expression);
     }
 
-    public Object compileString(Map<String,Object> dataObject, String expression) throws IOException {
+    public Object compileString(Map<String, Object> dataObject, String expression) throws IOException {
 
         if (expression.contains(Handlebars.DELIM_START) && expression.contains(Handlebars.DELIM_END)) {
             Map<String, Object> map = mapListResolver.resolveDeepMap(dataObject);
             return renderTemplate(map, expression);
-        }else{
+        } else {
             Object o = extractObjectValue(dataObject, expression);
-            if (null!=o)
+            if (null != o)
                 return o;
             return expression;
         }
     }
-
 
 
     public String renderTemplate(String item) throws IOException {
@@ -330,7 +341,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
 
     }
 
-    public String renderTemplate(Map<String,Object> dataObject, String item) throws IOException {
+    public String renderTemplate(Map<String, Object> dataObject, String item) throws IOException {
 
         Template tmpl = handlerBarRenderer.getNext().compileInline(item);
         String alertSubjectResult = tmpl.apply(dataObject);

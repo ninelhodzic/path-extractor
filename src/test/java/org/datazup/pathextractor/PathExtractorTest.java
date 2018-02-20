@@ -18,23 +18,23 @@ public class PathExtractorTest extends ExtractorTestBase {
         Object compiled = pathExtractor.compileString(strToCompile);
         Assert.assertNotNull(compiled);
         Assert.assertTrue(compiled instanceof String);
-        Assert.assertTrue(((String)compiled).equals("hello child"));
+        Assert.assertTrue(((String) compiled).equals("hello child"));
         //Assert.assertTrue(compiled.equals("hello "));
     }
 
     @Test
     public void isNewHelpersWorking() throws IOException {
         String strToCompile = "";
-        strToCompile+=" {{#IFB (COMPARE child.name '==' 'child') }} ";
-        strToCompile+=" THIS IS Child name {{child.name}} ";
-        strToCompile+=" {{else}} ";
-        strToCompile+=" THIS IS NOT CHID NAME ";
-        strToCompile+=" {{/IFB}}";
+        strToCompile += " {{#IFB (COMPARE child.name '==' 'child') }} ";
+        strToCompile += " THIS IS Child name {{child.name}} ";
+        strToCompile += " {{else}} ";
+        strToCompile += " THIS IS NOT CHID NAME ";
+        strToCompile += " {{/IFB}}";
         Object compiled = pathExtractor.compileString(strToCompile);
         Assert.assertNotNull(compiled);
         Assert.assertTrue(compiled instanceof String);
         System.out.println(compiled);
-        Assert.assertTrue(((String)compiled).trim().equals("THIS IS Child name child"));
+        Assert.assertTrue(((String) compiled).trim().equals("THIS IS Child name child"));
     }
 
 
@@ -44,7 +44,7 @@ public class PathExtractorTest extends ExtractorTestBase {
         Object compiled = pathExtractor.compileString(strToCompile);
         Assert.assertNotNull(compiled);
         Assert.assertTrue(compiled instanceof String);
-        Assert.assertTrue(((String)compiled).equals("neki text"));
+        Assert.assertTrue(((String) compiled).equals("neki text"));
     }
 
     @Test
@@ -52,12 +52,12 @@ public class PathExtractorTest extends ExtractorTestBase {
         String strToCompile = " ovo je moj text {{child.name}}";
         long start = System.currentTimeMillis();
         int num = 10000;
-        for (int i=0;i<num;i++) {
+        for (int i = 0; i < num; i++) {
             Object compiled = pathExtractor.compileString(strToCompile);
-         //   Assert.assertNotNull(compiled);
+            //   Assert.assertNotNull(compiled);
         }
         long end = System.currentTimeMillis();
-        System.out.println("Num: "+num+" executed in: "+(end-start)+" ms, average: "+((end-start)/num)+" ms");
+        System.out.println("Num: " + num + " executed in: " + (end - start) + " ms, average: " + ((end - start) / num) + " ms");
 
 
         //Assert.assertTrue(compiled.equals("hello "));
@@ -70,9 +70,9 @@ public class PathExtractorTest extends ExtractorTestBase {
 
         Assert.assertNotNull(compiled);
         Assert.assertTrue(compiled instanceof String);
-        Assert.assertTrue(((String)compiled).startsWith("<html>"));
-        Assert.assertTrue(((String)compiled).endsWith("</html>"));
-        Assert.assertFalse(((String)compiled).contains("{{"));
+        Assert.assertTrue(((String) compiled).startsWith("<html>"));
+        Assert.assertTrue(((String) compiled).endsWith("</html>"));
+        Assert.assertFalse(((String) compiled).contains("{{"));
     }
 
     @Test
@@ -93,22 +93,23 @@ public class PathExtractorTest extends ExtractorTestBase {
     }
 
     @Test
-    public void itExtractsObject(){
+    public void itExtractsObject() {
         String path = "$child.value$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
         Assert.assertTrue(obj instanceof Integer);
     }
+
     @Test
-    public void itExtractsChildObject(){
+    public void itExtractsChildObject() {
         String path = "$child.name$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
-        Assert.assertEquals("child",obj);
+        Assert.assertEquals("child", obj);
     }
 
     @Test
-    public void itExtractsListType(){
+    public void itExtractsListType() {
         String path = "$child.list$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
@@ -116,7 +117,7 @@ public class PathExtractorTest extends ExtractorTestBase {
     }
 
     @Test
-    public void itExtractsList(){
+    public void itExtractsList() {
         String path = "$child.list$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
@@ -124,42 +125,42 @@ public class PathExtractorTest extends ExtractorTestBase {
     }
 
     @Test
-    public void itExtractListWithParenthesis(){
+    public void itExtractListWithParenthesis() {
         String path = "$child.list[]$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListFirstObject(){
+    public void itExtractListFirstObject() {
         String path = "$child.list[0]$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListLastObject(){
+    public void itExtractListLastObject() {
         String path = "$child.list[last]$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListLastObjectWithFieldInMap(){
+    public void itExtractListLastObjectWithFieldInMap() {
         String path = "$child.list[last].first$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListLastObjectWithFieldInMapChildIn(){
+    public void itExtractListLastObjectWithFieldInMapChildIn() {
         String path = "$child.list[last].third.thirdChild$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListLastObjectWithFieldInMapChildInBench(){
+    public void itExtractListLastObjectWithFieldInMapChildInBench() {
         /*String path = "$child.list[last].third.thirdChild$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);*/
@@ -167,59 +168,70 @@ public class PathExtractorTest extends ExtractorTestBase {
         String path = "$child.list[last].third.thirdChild$";
         long start = System.currentTimeMillis();
         int num = 1000000;
-        for (int i=0;i<num;i++) {
+        for (int i = 0; i < num; i++) {
             Object obj = pathExtractor.extractObjectValue(path);
             //   Assert.assertNotNull(compiled);
         }
         long end = System.currentTimeMillis();
-        System.out.println("Num: "+num+" executed in: "+(end-start)+" ms, average: "+((end-start)/num)+" ms");
+        System.out.println("Num: " + num + " executed in: " + (end - start) + " ms, average: " + ((end - start) / num) + " ms");
 
     }
 
     @Test
-    public void itExtractListLastObjectWithFieldInMapChildInListIn(){
+    public void itExtractListLastObjectWithFieldInMapChildInList() {
+
+        String path = "$child.list[].third.thirdlist$";
+
+        Object obj = pathExtractor.extractObjectValue(path);
+        Assert.assertNotNull(obj);
+        Assert.assertTrue(obj instanceof List);
+
+    }
+
+    @Test
+    public void itExtractListLastObjectWithFieldInMapChildInListIn() {
         String path = "$child.list[last].fourth[]$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListLastObjectWithFieldInMapChildInListInFirst(){
+    public void itExtractListLastObjectWithFieldInMapChildInListInFirst() {
         String path = "$child.list[last].fourth[0]$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListLastObjectWithFieldInMapChildInListInLast(){
+    public void itExtractListLastObjectWithFieldInMapChildInListInLast() {
         String path = "$child.list[last].fourth[last]$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListLastObjectWithFieldInMapChildInListInLastMapList(){
+    public void itExtractListLastObjectWithFieldInMapChildInListInLastMapList() {
         String path = "$child.list[last].third.thirdlist[]$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListLastObjectWithFieldInMapChildInListInLastMapListFirst(){
+    public void itExtractListLastObjectWithFieldInMapChildInListInLastMapListFirst() {
         String path = "$child.list[last].third.thirdlist[0]$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListLastObjectWithFieldInMapChildInListInLastMapListLast(){
+    public void itExtractListLastObjectWithFieldInMapChildInListInLastMapListLast() {
         String path = "$child.list[last].third.thirdlist[last]$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
 
     @Test
-    public void itExtractListLastObjectWithFieldInMapChildInListInLastMapListLastUpdate(){
+    public void itExtractListLastObjectWithFieldInMapChildInListInLastMapListLastUpdate() {
         String path = "$child.list[last].third.thirdlist[last]$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
