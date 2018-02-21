@@ -1,6 +1,7 @@
 package org.datazup.pathextractor;
 
 
+import org.datazup.exceptions.PathExtractorException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -242,6 +243,30 @@ public class PathExtractorTest extends ExtractorTestBase {
         obj = pathExtractor.extractObjectValue(path);
         Assert.assertNull(obj);
     }
+
+    @Test
+    public void itThrowsObjectPathException() {
+        String path = "$child";
+        try {
+            Object o = pathExtractor.extractObjectValue(path);
+            Assert.assertTrue(false);
+        }catch (Throwable t){
+            Assert.assertTrue(t instanceof PathExtractorException);
+            System.out.println(t.getMessage());
+        }
+    }
+
+   /* @Test TODO - Fix parentheses typos errors and test - we should throw exception
+    public void itThrowsObjectPathParenthesesException() {
+        String path = "$child.list[$";
+        try {
+            Object o = pathExtractor.extractObjectValue(path);
+            Assert.assertTrue(false);
+        }catch (Throwable t){
+            Assert.assertTrue(t instanceof PathExtractorException);
+            System.out.println(t.getMessage());
+        }
+    }*/
 
 }
 

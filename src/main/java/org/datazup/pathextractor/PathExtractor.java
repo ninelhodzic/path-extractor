@@ -27,9 +27,7 @@ public class PathExtractor extends PathExtractorBase {
         this.setMapListResolver(mapListResolver);
     }
 
-  /*  public Map<String, Object> getObjectMap() {
-        return objectMap;
-    }*/
+
 
     @Override
     public boolean containsKey(String str) {

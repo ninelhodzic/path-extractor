@@ -4,6 +4,7 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.datazup.exceptions.PathExtractorException;
 import org.datazup.template.engine.HandlerBarRenderer;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
                 Object o = compileString(objMap, path);
                 return o;
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new PathExtractorException("Error in compile string with path: " + path, e);
             }
         }
         return extractObjectValue(objMap, path, false, false);
@@ -69,13 +70,23 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     public Object extractObjectValue(Map<String, Object> objMap, String path, boolean shouldRemove, boolean returnRowMap) {
         if (null == objMap || null == path || path.isEmpty()) return objMap;
 
-        path = normalizePath(path);
+        try {
+            path = normalizePath(path);
 
+        } catch (Throwable e) {
+            throw new PathExtractorException("Error normalizing Path: " + path, e);
+        }
         String tmp = path;
 
         if (path.contains(".")) {
-            String key = path.substring(0, path.indexOf("."));
-            String rest = path.substring(path.indexOf(".") + 1, path.length());
+            String key = null;
+            String rest = null;
+            try {
+                key = path.substring(0, path.indexOf("."));
+                rest = path.substring(path.indexOf(".") + 1, path.length());
+            } catch (Throwable e) {
+                throw new PathExtractorException("Cannot process dot notation for path: " + path, e);
+            }
             if (objMap.containsKey(key)) {
                 Object keyObj = objMap.get(key);
 
@@ -159,19 +170,24 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
 
     private Object handleListParenthesisExtraction(Map<String, Object> objMap, String path, boolean shouldRemove, boolean returnRowMap) {
         if (path.contains("]")) {
-            String listKey = path.substring(0, path.indexOf("["));
-            String parameter = path.substring(path.indexOf("[") + 1, path.indexOf("]"));
-            String rest = path.substring(path.indexOf("]") + 1, path.length());
-            if (rest.startsWith(".")) {
-                rest = rest.substring(1, rest.length());
-            }
-            // we need to escape '.' dot after ] (sample is: list[0].item
-            if (objMap.containsKey(listKey)) {
-                Object listObj = objMap.get(listKey);
-                List list = mapListResolver.resolveToList(listObj);
 
-                Object res = handleReturnFromList(list, objMap, listKey, parameter, rest, shouldRemove, returnRowMap);
-                return res;
+            try {
+                String listKey = path.substring(0, path.indexOf("["));
+                String parameter = path.substring(path.indexOf("[") + 1, path.indexOf("]"));
+                String rest = path.substring(path.indexOf("]") + 1, path.length());
+                if (rest.startsWith(".")) {
+                    rest = rest.substring(1, rest.length());
+                }
+                // we need to escape '.' dot after ] (sample is: list[0].item
+                if (objMap.containsKey(listKey)) {
+                    Object listObj = objMap.get(listKey);
+                    List list = mapListResolver.resolveToList(listObj);
+
+                    Object res = handleReturnFromList(list, objMap, listKey, parameter, rest, shouldRemove, returnRowMap);
+                    return res;
+                }
+            } catch (Throwable e) {
+                throw new PathExtractorException("Error processing list parenthesis inpath: " + path, e);
             }
         }
         return null;
@@ -307,6 +323,9 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
 
         if (path.startsWith("$") && path.endsWith("$")) {
             path = path.substring(1, path.length() - 1);
+        }
+        if (path.startsWith("$") && !path.endsWith("$")) {
+            throw new PathExtractorException("Path starts with $ but it doesn't end with $: " + path);
         }
         return path;
     }
