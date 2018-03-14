@@ -184,6 +184,23 @@ public class JsonUtils {
 
         }
 
+    public static String getJsonFromObjectPretty(Object object) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+        } catch (JsonGenerationException e) {
+            LOG.info(e.getMessage() + "; stack: " + Arrays.deepToString(e.getStackTrace()));
+        } catch (JsonMappingException e) {
+            LOG.info(e.getMessage() + "; stack: " + Arrays.deepToString(e.getStackTrace()));
+        } catch (IOException e) {
+            LOG.info(e.getMessage() + "; stack: " + Arrays.deepToString(e.getStackTrace()));
+        }
+        return null;
+
+    }
+
         public static Object getConvertObjectFromObject(Object obj, Class<?> objType) {
             String str = getJsonFromObject(obj);
             return getObjectFromJson(str, objType);

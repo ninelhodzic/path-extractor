@@ -48,19 +48,6 @@ public class HandlerBarRenderer {
 
             engine.registerHelpers(org.beryx.hbs.Helpers.class);
 
-
-/*            engine.registerHelper("compare", new Helper<Object>() {
-                @Override
-                public CharSequence apply(Object context, Options options) throws IOException {
-                    if (options.params.length < 3){
-                        throw new RuntimeException("Handlebars compare needs 2 parameters");
-                    }
-                    Object operator =  options.hash.get("operator");
-
-                    return null;
-                }
-            });*/
-
             engine.registerHelper("isNull", new Helper<Object>() {
                 @Override
                 public CharSequence apply(Object o, Options options) throws IOException {
@@ -75,6 +62,12 @@ public class HandlerBarRenderer {
                 @Override
                 public CharSequence apply(Object o, Options options) throws IOException {
                     return JsonUtils.getJsonFromObject(o);
+                }
+            });
+            engine.registerHelper("jsonpretty", new Helper<Object>() {
+                @Override
+                public CharSequence apply(Object o, Options options) throws IOException {
+                    return JsonUtils.getJsonFromObjectPretty(o);
                 }
             });
             HandlebarsWrapper handlebarsWrapper = new HandlebarsWrapper(engine);
