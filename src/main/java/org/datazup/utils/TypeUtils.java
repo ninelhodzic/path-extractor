@@ -1,5 +1,6 @@
 package org.datazup.utils;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -43,6 +44,18 @@ public class TypeUtils {
         Number n = resolveNumber(o);
         if (null!=n){
             return n.floatValue();
+        }
+        return null;
+    }
+
+    public static Boolean resolveBoolean(Object o) {
+        if (o instanceof Boolean)
+            return (Boolean)o;
+        if (o instanceof String){
+            return BooleanUtils.toBoolean((String)o);
+        }if (o instanceof Number){
+            int val = ((Number)o).intValue();
+            return BooleanUtils.toBoolean(val);
         }
         return null;
     }
