@@ -38,6 +38,20 @@ public class PathExtractorTest extends ExtractorTestBase {
         Assert.assertTrue(((String) compiled).trim().equals("THIS IS Child name child"));
     }
 
+    @Test
+    public void isNewHelpersOrWorking() throws IOException {
+        String strToCompile = "";
+        strToCompile += " {{#IFB (OR (COMPARE child.name '==' 'child') (COMPARE child.name '!=' 'child1')) }} ";
+        strToCompile += " THIS IS Child name {{child.name}} ";
+        strToCompile += " {{else}} ";
+        strToCompile += " THIS IS NOT CHID NAME ";
+        strToCompile += " {{/IFB}}";
+        Object compiled = pathExtractor.compileString(strToCompile);
+        Assert.assertNotNull(compiled);
+        Assert.assertTrue(compiled instanceof String);
+        System.out.println(compiled);
+        Assert.assertTrue(((String) compiled).trim().equals("THIS IS Child name child"));
+    }
 
     @Test
     public void itCompilesReturnString() throws IOException {
