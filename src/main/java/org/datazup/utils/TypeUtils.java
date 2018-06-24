@@ -59,4 +59,13 @@ public class TypeUtils {
         }
         return null;
     }
+
+    public static String resolveString(Object o) {
+        if (null==o) return null;
+
+        if (o instanceof String){
+            return (String)o;
+        }
+        return o.toString();
+    }
 }
