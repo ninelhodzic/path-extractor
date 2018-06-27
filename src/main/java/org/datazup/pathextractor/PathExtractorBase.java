@@ -363,6 +363,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     public String renderTemplate(Map<String, Object> dataObject, String item) throws IOException {
 
         Template tmpl = handlerBarRenderer.getNext().compileInline(item);
+
         String alertSubjectResult = tmpl.apply(dataObject);
         return alertSubjectResult;
 
