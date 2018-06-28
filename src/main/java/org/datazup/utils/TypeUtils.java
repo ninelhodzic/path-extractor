@@ -1,6 +1,7 @@
 package org.datazup.utils;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -67,5 +68,22 @@ public class TypeUtils {
             return (String)o;
         }
         return o.toString();
+    }
+
+    public static Object resolveBestMatching(String stringValue) {
+        if (StringUtils.isEmpty(stringValue))
+            return stringValue;
+        if (NumberUtils.isCreatable(stringValue)){
+            Number number = NumberUtils.createNumber(stringValue);
+            return number;
+        }else{
+            if (stringValue.equalsIgnoreCase("true")){
+                return Boolean.TRUE;
+            }else if (stringValue.equalsIgnoreCase("false")){
+                return Boolean.FALSE;
+            }else{
+                return stringValue;
+            }
+        }
     }
 }
