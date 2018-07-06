@@ -312,7 +312,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         Integer index = null;
         if (parameter.equalsIgnoreCase("last")) {
             index = listSize - 1;
-        } else if (NumberUtils.isNumber(parameter)) {
+        } else if (NumberUtils.isCreatable(parameter)) {
             index = NumberUtils.createInteger(parameter);
         }
         return index;
