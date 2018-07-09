@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.datazup.exceptions.PathExtractorException;
 import org.datazup.template.engine.HandlerBarRenderer;
+import org.datazup.utils.TypeUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -310,7 +311,11 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
 
     private Integer getListIndex(String parameter, Integer listSize) {
         Integer index = null;
-        if (parameter.equalsIgnoreCase("last")) {
+
+        if (parameter.startsWith("$")){
+           Object o = extractObjectValue(parameter);
+           index = TypeUtils.resolveInteger(o);
+        }else if (parameter.equalsIgnoreCase("last")) {
             index = listSize - 1;
         } else if (NumberUtils.isCreatable(parameter)) {
             index = NumberUtils.createInteger(parameter);
