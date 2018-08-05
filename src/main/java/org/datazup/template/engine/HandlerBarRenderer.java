@@ -8,6 +8,8 @@ import org.datazup.utils.JsonUtils;
 
 import java.io.IOException;
 
+import static org.apache.commons.lang3.Validate.validIndex;
+
 /**
  * Created by admin@datazup on 7/23/16.
  */
@@ -47,6 +49,23 @@ public class HandlerBarRenderer {
             Handlebars engine =  new Handlebars();
 
             engine.registerHelpers(org.beryx.hbs.Helpers.class);
+            engine.registerHelpers(com.github.jknack.handlebars.helper.StringHelpers.class);
+            engine.registerHelpers(com.github.jknack.handlebars.HumanizeHelper.class);
+
+            engine.registerHelper("substring", new Helper<Object>() {
+                @Override
+                public CharSequence apply(final Object value, final Options options) throws IOException {
+                    validIndex(options.params, 0, "Required start offset: ");
+
+                    String str = value.toString();
+                    Integer start = options.param(0);
+                    Integer end = options.param(1, str.length());
+                    if (str.length()<end)
+                        end = str.length();
+
+                    return str.substring(start, end);
+                }
+            });
 
             engine.registerHelper("isNull", new Helper<Object>() {
                 @Override
