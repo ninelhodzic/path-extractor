@@ -145,6 +145,13 @@ public class PathExtractorTest extends ExtractorTestBase {
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
+    @Test
+    public void itExtractListWithParenthesisChild() {
+        String path = "$items[].data$";
+        Object obj = pathExtractor.extractObjectValue(path);
+        Assert.assertNotNull(obj);
+        Assert.assertTrue(obj instanceof List);
+    }
 
     @Test
     public void itExtractListFirstObject() {

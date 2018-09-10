@@ -81,8 +81,20 @@ public class ExtractorTestBase {
         child.put("list",list);
 
 
+        List data = new ArrayList();
+        for (int i = 0;i<10;i++){
+            Map m = new HashMap();
+            Map m1 = new HashMap();
+            m1.put("id", 123);
+            m.put("data", m1);
+            m.put("id", i);
+            data.add(m);
+        }
+
+        parent.put("items", data);
         parent.put("child", child);
         parent.put("list",list1);
+
         return parent;
     }
 
