@@ -24,6 +24,30 @@ public class PathExtractorTest extends ExtractorTestBase {
     }
 
     @Test
+    public void itSimpleCurrencyStringProcessed() throws IOException {
+        String strToCompile = "$45.00 new price";
+        Object compiled = pathExtractor.compileString(strToCompile);
+        Assert.assertNotNull(compiled);
+        Assert.assertTrue(compiled instanceof String);
+        Assert.assertTrue(((String) compiled).equals(strToCompile));
+    }
+
+    @Test
+    public void itSimpleNotFormatedStringProcessed() throws IOException {
+        String strToCompile = "$ hello 45.00 new price";
+        boolean isProcessed = false;
+        try {
+            Object compiled = pathExtractor.compileString(strToCompile);
+            Assert.assertNotNull(compiled);
+            Assert.assertFalse(((String) compiled).equals(strToCompile));
+        }catch (Exception ex){
+            Assert.assertTrue(ex instanceof PathExtractorException);
+            isProcessed = true;
+        }
+        Assert.assertTrue(isProcessed);
+    }
+
+    @Test
     public void isNewHelpersWorking() throws IOException {
         String strToCompile = "";
         strToCompile += " {{#IFB (COMPARE child.name '==' 'child') }} ";
