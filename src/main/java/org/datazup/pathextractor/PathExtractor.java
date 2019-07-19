@@ -2,7 +2,7 @@ package org.datazup.pathextractor;
 
 import org.datazup.exceptions.PathExtractorException;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +17,7 @@ public class PathExtractor extends PathExtractorBase {
 
     public PathExtractor(Object objectMap, AbstractResolverHelper mapListResolver) {
         if (null == objectMap)
-            objectMap = new HashMap<>();
+            objectMap = new LinkedHashMap<>();
 
         Map<String, Object> map = mapListResolver.resolveDeepMap(objectMap);
         if (null == map) {
@@ -68,7 +68,7 @@ public class PathExtractor extends PathExtractorBase {
     public Map<String, Object> extractObjects(List<String> fields, Map<String, Object> inputMap, boolean shouldRemove) {
         if (null == inputMap) return null;
 
-        Map<String, Object> extractedMap = new HashMap<>();
+        Map<String, Object> extractedMap = new LinkedHashMap<>();
 
         for (String field : fields) {
             Object val = extractObjectValue(inputMap, field, shouldRemove, false);

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +66,7 @@ public class JsonUtils {
 
         @SuppressWarnings("rawtypes")
         public static Map getMapFromJson(String jsonString) {
-            return (Map) getObjectFromJson(jsonString, Map.class);
+            return (Map) getObjectFromJson(jsonString, LinkedHashMap.class);
         }
 
         public static Object getObjectFromJson(String jsonString, Class<?> objType) {
