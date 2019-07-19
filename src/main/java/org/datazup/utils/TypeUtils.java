@@ -27,19 +27,25 @@ public class TypeUtils {
         }
         return null;
     }
-    public static Double resolveDouble(Object o){
+    public static Double resolveDouble(Object o, Double defaultValue){
         Number n = resolveNumber(o);
         if (null!=n){
             return n.doubleValue();
         }
-        return null;
+        return defaultValue;
+    }
+    public static Double resolveDouble(Object o){
+        return resolveDouble(o, null);
     }
     public static Integer resolveInteger(Object o){
+        return resolveInteger(o, null);
+    }
+    public static Integer resolveInteger(Object o, Integer defaultValue){
         Number n = resolveNumber(o);
         if (null!=n){
             return n.intValue();
         }
-        return null;
+        return defaultValue;
     }
     public static Float resolveFloat(Object o){
         Number n = resolveNumber(o);
