@@ -1,7 +1,9 @@
 package org.datazup.template.engine;
 
 
-import com.github.jknack.handlebars.*;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Helper;
+import com.github.jknack.handlebars.Options;
 import org.datazup.ring.IObjectBuilder;
 import org.datazup.ring.LoadBalancedInstanceAccessor;
 import org.datazup.utils.JsonUtils;
