@@ -95,6 +95,9 @@ public class ExtractorTestBase {
         parent.put("child", child);
         parent.put("list",list1);
 
+        parent.put("bool", true);
+        parent.put("boolStr", "true");
+
         return parent;
     }
 

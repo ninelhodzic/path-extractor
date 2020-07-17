@@ -277,6 +277,14 @@ public class PathExtractorTest extends ExtractorTestBase {
     }
 
     @Test
+    public void itExtractTrueAsBoolean() {
+        String path = "$bool$";
+        Object obj = pathExtractor.extractObjectValue(path);
+        Assert.assertNotNull(obj);
+        Assert.assertTrue(obj.equals(true));
+    }
+
+    @Test
     public void itExtractListLastObjectWithFieldInMapChildInListInLastMapListLastUpdate() {
         String path = "$child.list[last].third.thirdlist[last]$";
         Object obj = pathExtractor.extractObjectValue(path);
