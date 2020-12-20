@@ -32,7 +32,7 @@ public class SortingUtils {
                 Object val2 = o2.getValue();
 
 
-                if (finalDirection.equalsIgnoreCase("DESC")){
+                if (finalDirection.equalsIgnoreCase("ASC")){
                     if (finalSortingComponent.equalsIgnoreCase("BY_KEY")){
                         return compare(key2, key1);
                     }else{
