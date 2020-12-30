@@ -40,7 +40,7 @@ public class PathExtractorTest extends ExtractorTestBase {
             Object compiled = pathExtractor.compileString(strToCompile);
             Assert.assertNotNull(compiled);
             Assert.assertFalse(((String) compiled).equals(strToCompile));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Assert.assertTrue(ex instanceof PathExtractorException);
             isProcessed = true;
         }
@@ -169,6 +169,7 @@ public class PathExtractorTest extends ExtractorTestBase {
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
+
     @Test
     public void itExtractListWithParenthesisChild() {
         String path = "$items[].data$";
@@ -303,11 +304,21 @@ public class PathExtractorTest extends ExtractorTestBase {
         try {
             Object o = pathExtractor.extractObjectValue(path);
             Assert.assertTrue(false);
-        }catch (Throwable t){
+        } catch (Throwable t) {
             Assert.assertTrue(t instanceof PathExtractorException);
             System.out.println(t.getMessage());
         }
     }
+
+    @Test
+    public void isExtractingPropertyWithSeparator() {
+        String path = "$child.with-separator$";
+        Object o = pathExtractor.extractObjectValue(path);
+        Assert.assertTrue(o instanceof Number);
+        Assert.assertTrue(o.equals(3));
+    }
+
+
 
    /* @Test TODO - Fix parentheses typos errors and test - we should throw exception
     public void itThrowsObjectPathParenthesesException() {

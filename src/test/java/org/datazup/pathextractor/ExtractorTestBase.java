@@ -45,6 +45,7 @@ public class ExtractorTestBase {
         Map<String,Object> child = new HashMap<>();
         child.put("name","child");
         child.put("value", 1);
+        child.put("with-separator", 3);
 
         Map<String , Object> parent = new HashMap<>();
 
