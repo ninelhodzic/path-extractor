@@ -315,7 +315,11 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     private Integer getListIndex(String parameter, Integer listSize) {
         Integer index = null;
 
-        if (parameter.startsWith("$")){
+        if (parameter.startsWith("'#") && parameter.endsWith("#'")){
+            String param = parameter.substring(2, parameter.length()-2);
+            Object o = extractObjectValue(param);
+            index = TypeUtils.resolveInteger(o);
+        }else if (parameter.startsWith("$")){
            Object o = extractObjectValue(parameter);
            index = TypeUtils.resolveInteger(o);
         }else if (parameter.equalsIgnoreCase("last")) {

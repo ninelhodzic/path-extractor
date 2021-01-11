@@ -251,7 +251,7 @@ public class PathExtractorTest extends ExtractorTestBase {
 
     @Test
     public void itExtractListLastObjectWithFieldInMapChildInListInLast() {
-        String path = "$child.list[last].fourth[last]$";
+        String path = "$child.list[last].fourth['#index#']$";
         Object obj = pathExtractor.extractObjectValue(path);
         Assert.assertNotNull(obj);
     }
