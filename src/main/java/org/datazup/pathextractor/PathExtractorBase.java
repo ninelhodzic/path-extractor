@@ -196,7 +196,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
 
     private Object handleReturnFromList(List list, Map<String, Object> objMap, String listKey, String parameter, String rest, boolean shouldRemove, boolean returnRowMap) {
         Integer index = null;
-        if (null==list)
+        if (null == list)
             return null;
 
         if (StringUtils.isNotEmpty(parameter)) {
@@ -225,24 +225,19 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
                             return itemFromList;
                         }
                     }
-
                 } else {
                     if (returnRowMap) {
                         return list;
                     } else {
                         return itemFromList;
                     }
-
                 }
             }
         }
 
-
         if (StringUtils.isNotEmpty(rest)) {
-            // extract list of single object based on  rest value
             Object listOfObjects = extractFieldValues(list, rest, shouldRemove, returnRowMap);
             return listOfObjects;
-
         } else {
             if (shouldRemove) {
                 if (null == index) {
@@ -273,30 +268,13 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
 
             if (null != rest && !rest.isEmpty()) {
 
-
                 Map<String, Object> map = mapListResolver.resolveToMap(objInList);
 
                 if (rest.contains(".") || rest.contains("]")) {
                     // need to extract further
                     Object restObj = extractObjectValue(map, rest, shouldRemove, returnRowMap);
                     if (null != restObj) {
-
                         listOfObjects.add(restObj);
-
-//                        Object obj = mapListResolver.resolveToMap(restObj);
-//                        if (null != obj && obj instanceof Map) {
-//                            Map m = (Map) restObj;
-//                            if (m.containsKey(rest) && null != m.get(rest)) {
-//                                listOfObjects.add(restObj);
-//                            }
-//                        } else {
-//                            obj = mapListResolver.resolveToList(restObj);
-//                            if (null != obj && obj instanceof List) {
-//                                return restObj;
-//                            }else{
-//                                listOfObjects.ad
-//                            }
-//                        }
                     }
                 } else {
                     if (map.containsKey(rest)) {
@@ -315,14 +293,14 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     private Integer getListIndex(String parameter, Integer listSize) {
         Integer index = null;
 
-        if (parameter.startsWith("'#") && parameter.endsWith("#'")){
-            String param = parameter.substring(2, parameter.length()-2);
+        if (parameter.startsWith("'#") && parameter.endsWith("#'")) {
+            String param = parameter.substring(2, parameter.length() - 2);
             Object o = extractObjectValue(param);
             index = TypeUtils.resolveInteger(o);
-        }else if (parameter.startsWith("$")){
-           Object o = extractObjectValue(parameter);
-           index = TypeUtils.resolveInteger(o);
-        }else if (parameter.equalsIgnoreCase("last")) {
+        } else if (parameter.startsWith("$") && parameter.endsWith("$")) {
+            Object o = extractObjectValue(parameter);
+            index = TypeUtils.resolveInteger(o);
+        } else if (parameter.equalsIgnoreCase("last")) {
             index = listSize - 1;
         } else if (NumberUtils.isCreatable(parameter)) {
             index = NumberUtils.createInteger(parameter);
@@ -337,7 +315,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
             path = path.substring(1, path.length() - 1);
         }
 
-        if (path.startsWith("$") && path.length()>1 && !Character.isDigit(path.charAt(1)) && !path.endsWith("$")) {
+        if (path.startsWith("$") && path.length() > 1 && !Character.isDigit(path.charAt(1)) && !path.endsWith("$")) {
             throw new PathExtractorException("Path starts with $ but it doesn't end with $: " + path);
         }
         return path;
