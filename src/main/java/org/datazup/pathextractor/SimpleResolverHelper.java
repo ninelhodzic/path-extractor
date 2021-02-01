@@ -3,6 +3,7 @@ package org.datazup.pathextractor;
 import org.datazup.utils.JsonUtils;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -61,5 +62,14 @@ public class SimpleResolverHelper extends AbstractResolverHelper {
     @Override
     public List resolveDeepList(Object dataObject) {
         return resolveToList(dataObject);
+    }
+
+    @Override
+    public Iterable resolveIterable(Object dataObject) {
+        if (dataObject instanceof Iterator){
+            return (Iterable)dataObject;
+        }else{
+            return resolveToCollection(dataObject);
+        }
     }
 }

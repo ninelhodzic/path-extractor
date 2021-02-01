@@ -14,6 +14,7 @@ public abstract class AbstractResolverHelper {
     public abstract Collection resolveToCollection(Object o);
     public abstract Map resolveDeepMap(Object dataObject);
     public abstract List resolveDeepList(Object dataObject);
+    public abstract Iterable resolveIterable(Object dataObject);
 
 
     protected String cleanStartEndHash(String s) {

@@ -11,9 +11,13 @@ import java.time.Instant;
  */
 public class TypeUtils {
     public static Number resolveNumber(Object o) {
+
         if (o instanceof Number) {
             return (Number) o;
         } else if (o instanceof String) {
+            if (!NumberUtils.isCreatable((String)o)){
+                return null;
+            }
             return NumberUtils.createNumber((String) o);
         } else if (o instanceof Boolean) {
             Boolean v = (Boolean) o;
