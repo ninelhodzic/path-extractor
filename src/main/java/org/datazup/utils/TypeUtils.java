@@ -22,6 +22,9 @@ public class TypeUtils {
         } else if (o instanceof Boolean) {
             Boolean v = (Boolean) o;
             return v == Boolean.TRUE ? 1 : 0;
+        } else if (o instanceof Instant){
+            Instant instant = (Instant) o;
+            return instant.getEpochSecond();
         }
         return null;
     }
@@ -154,5 +157,16 @@ public class TypeUtils {
             return Instant.ofEpochMilli(number.longValue());
         }
         return null;
+    }
+
+    public static boolean isSimpleVal(Object valObj) {
+        if (valObj instanceof Number || valObj instanceof Boolean || valObj instanceof String){
+            return true;
+        }
+        return false;
+    }
+
+    public static String resolveAsText(Object valObj) {
+        return valObj.toString();
     }
 }

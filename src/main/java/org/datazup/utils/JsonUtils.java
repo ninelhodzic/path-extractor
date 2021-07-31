@@ -154,9 +154,9 @@ public class JsonUtils {
                 actualObj = mapper.readTree(jsonString);
             } catch (JsonProcessingException e) {
                 LOG.info(e.getMessage() + "; stack: " + Arrays.deepToString(e.getStackTrace()));
-            } catch (IOException e) {
+            } /*catch (IOException e) {
                 LOG.info(e.getMessage() + "; stack: " + Arrays.deepToString(e.getStackTrace()));
-            }
+            }*/
             return actualObj;
         }
 
