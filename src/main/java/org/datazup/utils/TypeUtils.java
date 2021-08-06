@@ -70,6 +70,10 @@ public class TypeUtils {
     }
 
     public static Boolean resolveBoolean(Object o) {
+        return resolveBoolean(o, null);
+    }
+
+    public static Boolean resolveBoolean(Object o, Boolean defaultVal) {
         if (o instanceof Boolean)
             return (Boolean) o;
         if (o instanceof String) {
@@ -79,7 +83,7 @@ public class TypeUtils {
             int val = ((Number) o).intValue();
             return BooleanUtils.toBoolean(val);
         }
-        return null;
+        return defaultVal;
     }
 
     public static String resolveString(Object o) {
