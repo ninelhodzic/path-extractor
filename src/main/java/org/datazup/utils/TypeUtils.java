@@ -37,6 +37,14 @@ public class TypeUtils {
         return null;
     }
 
+    public static Long resolveLong(Object o, Long defaultValue) {
+        Number n = resolveNumber(o);
+        if (null != n) {
+            return n.longValue();
+        }
+        return defaultValue;
+    }
+
     public static Double resolveDouble(Object o, Double defaultValue) {
         Number n = resolveNumber(o);
         if (null != n) {
