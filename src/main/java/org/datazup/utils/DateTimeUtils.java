@@ -8,6 +8,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -38,10 +39,10 @@ public class DateTimeUtils {
                     getFormatter("YYYYMMddHHmmss.SSSZ"));
 
     private static DateTimeFormatter getFormatter(String format) {
-        DateTimeFormatter fmt =null;
-        if (StringUtils.isEmpty(format)){
+        DateTimeFormatter fmt = null;
+        if (StringUtils.isEmpty(format)) {
             fmt = DateTimeFormat.fullDateTime().withZoneUTC().withLocale(Locale.ENGLISH);
-        }else {
+        } else {
             fmt = DateTimeFormat.forPattern(format).withZoneUTC().withLocale(Locale.ENGLISH);
 
         }
@@ -56,37 +57,37 @@ public class DateTimeUtils {
 
     public static ZoneOffset resolveZoneOffset(Integer tzValue) {
         ZoneOffset zoneOffset = ZoneOffset.UTC;
-        if (null==tzValue)
+        if (null == tzValue)
             return zoneOffset;
 
 
-        if (tzValue>=-18 && tzValue<=18) {
+        if (tzValue >= -18 && tzValue <= 18) {
             zoneOffset = ZoneOffset.ofHours(tzValue);
-        }else{
-            tzValue = tzValue/60;// if it is in minutes
+        } else {
+            tzValue = tzValue / 60;// if it is in minutes
             zoneOffset = ZoneOffset.ofHours(tzValue);
         }
         return zoneOffset;
     }
 
-    public static ZoneOffset resolveZoneOffset(Object tzValue){
+    public static ZoneOffset resolveZoneOffset(Object tzValue) {
         ZoneOffset zoneOffset = ZoneOffset.UTC;
-        if (null==tzValue)
+        if (null == tzValue)
             return zoneOffset;
 
         Integer i = TypeUtils.resolveInteger(tzValue);
-        if (null!=i){
+        if (null != i) {
             zoneOffset = resolveZoneOffset(i);
         }
 
         return zoneOffset;
     }
 
-    public static Instant resolve(Object dtValue, Object tzValue){
+    public static Instant resolve(Object dtValue, Object tzValue) {
         Instant dtInstant = resolve(dtValue);
-        if (null==dtInstant)
+        if (null == dtInstant)
             return null;
-        if (null==tzValue)
+        if (null == tzValue)
             return dtInstant;
 
         ZoneOffset zoneOffset = resolveZoneOffset(tzValue);
@@ -96,23 +97,27 @@ public class DateTimeUtils {
     }
 
     public static Instant resolve(Object obj) {
-        if (obj instanceof Instant){
-            return (Instant)obj;
-        }else
-        if (obj instanceof DateTime) {
-            return from((DateTime)obj);
-        } else if (obj instanceof Long)
-            return Instant.ofEpochMilli((Long) obj);
+        if (null == obj) return null;
+        if (obj instanceof Instant) {
+            return (Instant) obj;
+        } else if (obj instanceof DateTime) {
+            return from((DateTime) obj);
+        } else if (obj instanceof Date) {
+            return ((Date) obj).toInstant();
+        } else if (obj instanceof java.sql.Date) {
+            return Instant.ofEpochMilli(((java.sql.Date) obj).getTime());
+        } else if (obj instanceof Number)
+            return Instant.ofEpochMilli(((Number) obj).longValue());
         else if (obj instanceof String) {
             Instant dt = null;
             try {
-                dt = Instant.parse((String)obj);
+                dt = Instant.parse((String) obj);
                 return dt;
-            }catch (Exception e){
-               // nothing
+            } catch (Exception e) {
+                // nothing
             }
 
-            if (null==dt) {
+            if (null == dt) {
                 for (DateTimeFormatter fmt : COMMON_DATE_TIME_FORMATS) {
                     dt = resolve(fmt, (String) obj);
                     if (null != dt) {
@@ -124,18 +129,18 @@ public class DateTimeUtils {
         return null;
     }
 
-    public static Instant from(DateTime dt){
+    public static Instant from(DateTime dt) {
         Instant i = Instant.ofEpochMilli(dt.getMillis());
         return i;
     }
 
-    public static Instant resolve(DateTimeFormatter fmt, String dateString){
+    public static Instant resolve(DateTimeFormatter fmt, String dateString) {
 
         try {
             DateTime dt = fmt.parseDateTime(dateString);
             return resolve(dt);
-        }catch (Exception e){
-           // e.printStackTrace();
+        } catch (Exception e) {
+            // e.printStackTrace();
             return null;
         }
     }
@@ -156,32 +161,37 @@ public class DateTimeUtils {
         return resolve(fmt, datetime);
     }
 
-    public static int getSecond(Instant instant){
+    public static int getSecond(Instant instant) {
         return LocalDateTime.ofInstant(instant, ZoneOffset.UTC).getSecond();
     }
-    public static int getMinute(Instant instant){
+
+    public static int getMinute(Instant instant) {
         return LocalDateTime.ofInstant(instant, ZoneOffset.UTC).getMinute();
     }
-    public static int getHour(Instant instant){
+
+    public static int getHour(Instant instant) {
         return LocalDateTime.ofInstant(instant, ZoneOffset.UTC).getHour();
     }
-    public static int getDayOfMonth(Instant instant){
+
+    public static int getDayOfMonth(Instant instant) {
         return LocalDateTime.ofInstant(instant, ZoneOffset.UTC).getDayOfMonth();
     }
 
-    public static int getMonth(Instant instant){
+    public static int getMonth(Instant instant) {
         return LocalDateTime.ofInstant(instant, ZoneOffset.UTC).getMonthValue();
     }
-    public static int getYear(Instant instant){
+
+    public static int getYear(Instant instant) {
         return LocalDateTime.ofInstant(instant, ZoneOffset.UTC).getYear();
     }
 
     public static Instant format(Instant dt, String format) {
         DateTimeFormatter formatter = getFormatter(format);
-        DateTime dti = new DateTime( dt.toEpochMilli());
+        DateTime dti = new DateTime(dt.toEpochMilli());
         String dtString = dti.toString(formatter);
         return resolve(dtString, format);
     }
+
     public static Instant format(DateTime dt, String format) {
         String dtString = dt.toString(format);
 

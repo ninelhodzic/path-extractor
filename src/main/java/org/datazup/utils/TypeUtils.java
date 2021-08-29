@@ -15,14 +15,14 @@ public class TypeUtils {
         if (o instanceof Number) {
             return (Number) o;
         } else if (o instanceof String) {
-            if (!NumberUtils.isCreatable((String)o)){
+            if (!NumberUtils.isCreatable((String) o)) {
                 return null;
             }
             return NumberUtils.createNumber((String) o);
         } else if (o instanceof Boolean) {
             Boolean v = (Boolean) o;
             return v == Boolean.TRUE ? 1 : 0;
-        } else if (o instanceof Instant){
+        } else if (o instanceof Instant) {
             Instant instant = (Instant) o;
             return instant.getEpochSecond();
         }
@@ -149,30 +149,12 @@ public class TypeUtils {
         return res;
     }
 
-    private static Instant resolveInstant(Object obj) {
-        if (obj instanceof String) {
-
-            /*try {
-                Instant res = Instant.parse((String) obj);
-                return res;
-            } catch (Exception e) {
-                Number number = resolveNumber(obj);
-                if (number != null) {
-                    return Instant.ofEpochMilli(number.longValue());
-                }
-            }*/
-            Instant res = DateTimeUtils.resolve(obj);
-
-            return res;
-        } else if (obj instanceof Number) {
-            Number number = (Number) obj;
-            return Instant.ofEpochMilli(number.longValue());
-        }
-        return null;
+    public static Instant resolveInstant(Object obj) {
+        return DateTimeUtils.resolve(obj);
     }
 
     public static boolean isSimpleVal(Object valObj) {
-        if (valObj instanceof Number || valObj instanceof Boolean || valObj instanceof String){
+        if (valObj instanceof Number || valObj instanceof Boolean || valObj instanceof String) {
             return true;
         }
         return false;
