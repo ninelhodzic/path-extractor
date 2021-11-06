@@ -4,6 +4,8 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.time.Instant;
 
 /**
@@ -94,13 +96,25 @@ public class TypeUtils {
         return defaultVal;
     }
 
-    public static String resolveString(Object o) {
+    public static String resolveString(Object o, String charset) {
         if (null == o) return null;
-
+        if (null==charset || charset.isEmpty()){
+            charset = "UTF-8";
+        }
         if (o instanceof String) {
             return (String) o;
+        }else if (o instanceof byte[]){
+            try {
+                return new String((byte[]) o, charset);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
         return o.toString();
+    }
+    public static String resolveString(Object o) {
+        return resolveString(o, "UTF-8");
     }
 
     public static Object resolveBestMatching(String stringValue) {
