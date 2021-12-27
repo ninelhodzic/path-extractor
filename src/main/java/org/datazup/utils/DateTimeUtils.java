@@ -3,6 +3,7 @@ package org.datazup.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -39,22 +40,21 @@ public class DateTimeUtils {
                     getFormatter("YYYYMMddHHmmss.SSSZ"));
 
     private static DateTimeFormatter getFormatter(String format) {
-        DateTimeFormatter fmt = null;
+        DateTimeFormatter fmt;
         if (StringUtils.isEmpty(format)) {
-            fmt = DateTimeFormat.fullDateTime().withZoneUTC().withLocale(Locale.ENGLISH);
+            fmt = DateTimeFormat.longDateTime().withZoneUTC().withLocale(Locale.ENGLISH);//fullDateTime().withZoneUTC().withLocale(Locale.ENGLISH);
         } else {
             fmt = DateTimeFormat.forPattern(format).withZoneUTC().withLocale(Locale.ENGLISH);
-
         }
         return fmt;
     }
 
-    private static DateTimeFormatter getFormatter(String format, Locale locale) {
+    /*   private static DateTimeFormatter getFormatter(String format, Locale locale) {
 
-        DateTimeFormatter fmt = DateTimeFormat.forPattern(format).withZoneUTC().withLocale(locale);
-        return fmt;
-    }
-
+           DateTimeFormatter fmt = DateTimeFormat.forPattern(format).withZoneUTC().withLocale(locale);
+           return fmt;
+       }
+   */
     public static ZoneOffset resolveZoneOffset(Integer tzValue) {
         ZoneOffset zoneOffset = ZoneOffset.UTC;
         if (null == tzValue)
@@ -137,8 +137,9 @@ public class DateTimeUtils {
     public static Instant resolve(DateTimeFormatter fmt, String dateString) {
 
         try {
-            DateTime dt = fmt.parseDateTime(dateString);
-            return resolve(dt);
+            DateTime dt = DateTime.parse(dateString, fmt);
+            dt = dt.withZone(DateTimeZone.UTC);
+            return from(dt);
         } catch (Exception e) {
             // e.printStackTrace();
             return null;
@@ -154,9 +155,6 @@ public class DateTimeUtils {
     }
 
     public static Instant resolve(String datetime, String format) {
-        /*if (null==format || format.isEmpty()){
-            return resolve(datetime);
-        }*/
         DateTimeFormatter fmt = getFormatter(format);
         return resolve(fmt, datetime);
     }
@@ -205,6 +203,9 @@ public class DateTimeUtils {
 
     public static Instant format(Long dt, String format) {
         Instant instant = Instant.ofEpochMilli(dt);
+        if (null == format || format.isEmpty()) {
+            return instant;
+        }
         return format(instant, format);
     }
 

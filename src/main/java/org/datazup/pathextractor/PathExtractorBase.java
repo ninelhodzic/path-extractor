@@ -1,6 +1,7 @@
 package org.datazup.pathextractor;
 
 import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Template;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 public abstract class PathExtractorBase implements AbstractVariableSet {
 
-    HandlerBarRenderer handlerBarRenderer = new HandlerBarRenderer();
+    HandlerBarRenderer handlerBarRenderer;
 
     public abstract Object extractObjectValue(String path);
 
@@ -27,9 +28,24 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     //public abstract List resolveToList(Object o);
     public abstract Map<String, Object> getDataObject();
 
+    public abstract Map<String, Helper> handlebarsHelpers();
+
     //public abstract Map resolveDeepMap(Map dataObject);
     private AbstractResolverHelper mapListResolver;
 
+    public PathExtractorBase(){
+
+    }
+
+    protected void init(){
+        handlerBarRenderer  = new HandlerBarRenderer();
+        if (null!=handlebarsHelpers()){
+            for(String name: handlebarsHelpers().keySet()) {
+                handlerBarRenderer.registerHelper(name, handlebarsHelpers().get(name));
+            }
+        }
+        handlerBarRenderer.init();
+    }
 
     public Object extractObjectValue(Map<String, Object> objMap, String path) {
         if (path.contains(Handlebars.DELIM_START) && path.contains(Handlebars.DELIM_END)) {

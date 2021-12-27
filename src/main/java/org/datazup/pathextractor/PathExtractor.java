@@ -1,5 +1,6 @@
 package org.datazup.pathextractor;
 
+import com.github.jknack.handlebars.Helper;
 import org.datazup.exceptions.PathExtractorException;
 
 import java.util.LinkedHashMap;
@@ -12,19 +13,29 @@ import java.util.Map;
 public class PathExtractor extends PathExtractorBase {
     protected Map<String, Object> objectMap;
 
-    public PathExtractor() {
+  /*  public PathExtractor() {
+        super();
     }
-
+*/
     public PathExtractor(Object objectMap, AbstractResolverHelper mapListResolver) {
         if (null == objectMap)
             objectMap = new LinkedHashMap<>();
 
-        Map<String, Object> map = mapListResolver.resolveDeepMap(objectMap);
+        Map<String, Object> map = null;
+
+        if (objectMap instanceof Map){
+            map = (Map<String, Object>) objectMap;
+        }else{
+            map = mapListResolver.resolveDeepMap(objectMap);
+        }
+
         if (null == map) {
             throw new PathExtractorException("Provided object is not of type Map - wrong type is: "+objectMap.getClass().getName());
         }
         this.objectMap = map;
         this.setMapListResolver(mapListResolver);
+
+        this.init();
     }
 
 
@@ -47,6 +58,11 @@ public class PathExtractor extends PathExtractorBase {
     @Override
     public Map<String, Object> getDataObject() {
         return this.objectMap;
+    }
+
+    @Override
+    public Map<String, Helper> handlebarsHelpers() {
+        return null;
     }
 
     @Override

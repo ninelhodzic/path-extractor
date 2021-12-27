@@ -9,6 +9,8 @@ import org.datazup.ring.LoadBalancedInstanceAccessor;
 import org.datazup.utils.JsonUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.apache.commons.lang3.Validate.validIndex;
 
@@ -20,7 +22,13 @@ public class HandlerBarRenderer {
     private int numOfHandlers = Runtime.getRuntime().availableProcessors();
     private static LoadBalancedInstanceAccessor<HandlebarsWrapper> engineAccessor;
 
+    private Map<String, Helper> handleBarsHelpers = new HashMap<>();
+
     public HandlerBarRenderer(){
+
+    }
+
+    public void init(){
         if (null==engineAccessor){
             synchronized (HandlerBarRenderer.class){
                 if (null==engineAccessor){
@@ -42,6 +50,10 @@ public class HandlerBarRenderer {
 
     public Handlebars getNext(){
         return  getNextWrapper().get();
+    }
+
+    public void registerHelper(String name, Helper helper){
+        this.handleBarsHelpers.put(name, helper);
     }
 
     private class HandlebarsBuilder implements IObjectBuilder<HandlebarsWrapper>{
@@ -91,6 +103,9 @@ public class HandlerBarRenderer {
                     return JsonUtils.getJsonFromObjectPretty(o);
                 }
             });
+            for(String name: handleBarsHelpers.keySet()){
+                engine.registerHelper(name, handleBarsHelpers.get(name));
+            }
             HandlebarsWrapper handlebarsWrapper = new HandlebarsWrapper(engine);
             return handlebarsWrapper;
         }
