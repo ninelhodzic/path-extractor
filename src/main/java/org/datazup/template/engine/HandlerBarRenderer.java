@@ -19,10 +19,10 @@ import static org.apache.commons.lang3.Validate.validIndex;
  */
 public class HandlerBarRenderer {
 
-    private int numOfHandlers = Runtime.getRuntime().availableProcessors();
+    private final int numOfHandlers = Runtime.getRuntime().availableProcessors();
     private static LoadBalancedInstanceAccessor<HandlebarsWrapper> engineAccessor;
 
-    private Map<String, Helper> handleBarsHelpers = new HashMap<>();
+    private final Map<String, Helper> handleBarsHelpers = new HashMap<>();
 
     public HandlerBarRenderer(){
 

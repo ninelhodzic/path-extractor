@@ -19,7 +19,7 @@ public class PathExtractorTest extends ExtractorTestBase {
         Object compiled = pathExtractor.compileString(strToCompile);
         Assert.assertNotNull(compiled);
         Assert.assertTrue(compiled instanceof String);
-        Assert.assertTrue(((String) compiled).equals("hello child"));
+        Assert.assertTrue(compiled.equals("hello child"));
         //Assert.assertTrue(compiled.equals("hello "));
     }
 
@@ -29,7 +29,7 @@ public class PathExtractorTest extends ExtractorTestBase {
         Object compiled = pathExtractor.compileString(strToCompile);
         Assert.assertNotNull(compiled);
         Assert.assertTrue(compiled instanceof String);
-        Assert.assertTrue(((String) compiled).equals(strToCompile));
+        Assert.assertTrue(compiled.equals(strToCompile));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class PathExtractorTest extends ExtractorTestBase {
         try {
             Object compiled = pathExtractor.compileString(strToCompile);
             Assert.assertNotNull(compiled);
-            Assert.assertFalse(((String) compiled).equals(strToCompile));
+            Assert.assertFalse(compiled.equals(strToCompile));
         } catch (Exception ex) {
             Assert.assertTrue(ex instanceof PathExtractorException);
             isProcessed = true;
@@ -83,7 +83,7 @@ public class PathExtractorTest extends ExtractorTestBase {
         Object compiled = pathExtractor.compileString(strToCompile);
         Assert.assertNotNull(compiled);
         Assert.assertTrue(compiled instanceof String);
-        Assert.assertTrue(((String) compiled).equals("neki text"));
+        Assert.assertTrue(compiled.equals("neki text"));
     }
 
     @Test

@@ -167,10 +167,7 @@ public class TypeUtils {
     }
 
     public static boolean isSimpleVal(Object valObj) {
-        if (valObj instanceof Number || valObj instanceof Boolean || valObj instanceof String) {
-            return true;
-        }
-        return false;
+        return valObj instanceof Number || valObj instanceof Boolean || valObj instanceof String;
     }
 
     public static String resolveAsText(Object valObj) {

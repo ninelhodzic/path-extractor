@@ -7,7 +7,7 @@ import org.datazup.ring.IClosableWrapper;
  * Created by admin@datazup on 11/24/16.
  */
 public class HandlebarsWrapper implements IClosableWrapper<Handlebars> {
-    private Handlebars handlebars;
+    private final Handlebars handlebars;
 
     public HandlebarsWrapper(Handlebars handlebars){
         this.handlebars = handlebars;

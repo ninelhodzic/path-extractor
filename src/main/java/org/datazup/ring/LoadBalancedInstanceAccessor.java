@@ -68,9 +68,9 @@ public class LoadBalancedInstanceAccessor<T extends IClosableWrapper<?>> {
     }
 
     public static class InstanceBuilder<T> {
-        private Class<T> clazz;
+        private final Class<T> clazz;
         private int count = 0;
-        private IObjectBuilder<T> initializer;
+        private final IObjectBuilder<T> initializer;
 
 
         public InstanceBuilder(Class<T> clazz, int count, IObjectBuilder<T> initializer) {
@@ -80,7 +80,7 @@ public class LoadBalancedInstanceAccessor<T extends IClosableWrapper<?>> {
         }
 
         public void build() {
-            Holder.INSTANCE.build((InstanceBuilder<?>) this);
+            Holder.INSTANCE.build(this);
         }
     }
 }

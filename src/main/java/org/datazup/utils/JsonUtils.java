@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class JsonUtils {
 
-        private static Logger LOG = LoggerFactory.getLogger(JsonUtils.class);
+        private static final Logger LOG = LoggerFactory.getLogger(JsonUtils.class);
 
         public static Object getDeserializedFromBytes(byte[] buffer, Class<?> objType) {
             ObjectMapper mapper = new ObjectMapper();

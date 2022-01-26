@@ -65,7 +65,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         if (path.contains(".")) {
 
             String key = path.substring(0, path.indexOf("."));
-            String rest = path.substring(path.indexOf(".") + 1, path.length());
+            String rest = path.substring(path.indexOf(".") + 1);
             if (objMap.containsKey(key)) {
                 Object keyObj = objMap.get(key);
                 Map resolvedMap = mapListResolver.resolveToMap(keyObj);
@@ -100,7 +100,7 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
             String rest = null;
             try {
                 key = path.substring(0, path.indexOf("."));
-                rest = path.substring(path.indexOf(".") + 1, path.length());
+                rest = path.substring(path.indexOf(".") + 1);
             } catch (Throwable e) {
                 throw new PathExtractorException("Cannot process dot notation for path: " + path, e);
             }
@@ -137,9 +137,9 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
         if (path.contains("]")) {
             String listKey = path.substring(0, path.indexOf("["));
             String parameter = path.substring(path.indexOf("[") + 1, path.indexOf("]"));
-            String rest = path.substring(path.indexOf("]") + 1, path.length());
+            String rest = path.substring(path.indexOf("]") + 1);
             if (rest.startsWith(".")) {
-                rest = rest.substring(1, rest.length());
+                rest = rest.substring(1);
             }
             // we need to escape '.' dot after ] (sample is: list[0].item
             if (objMap.containsKey(listKey)) {
@@ -191,9 +191,9 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
             try {
                 String listKey = path.substring(0, path.indexOf("["));
                 String parameter = path.substring(path.indexOf("[") + 1, path.indexOf("]"));
-                String rest = path.substring(path.indexOf("]") + 1, path.length());
+                String rest = path.substring(path.indexOf("]") + 1);
                 if (rest.startsWith(".")) {
-                    rest = rest.substring(1, rest.length());
+                    rest = rest.substring(1);
                 }
                 // we need to escape '.' dot after ] (sample is: list[0].item
                 if (objMap.containsKey(listKey)) {

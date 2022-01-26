@@ -23,7 +23,7 @@ import java.util.Locale;
 
 public class DateTimeUtils {
 
-    private static List<DateTimeFormatter> COMMON_DATE_TIME_FORMATS =
+    private static final List<DateTimeFormatter> COMMON_DATE_TIME_FORMATS =
             Arrays.asList(ISODateTimeFormat.dateTime(),
                     getFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS"),
                     getFormatter("yyyy-MM-dd'T'HH:mm:ss"),
