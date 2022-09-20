@@ -33,14 +33,14 @@ public abstract class PathExtractorBase implements AbstractVariableSet {
     //public abstract Map resolveDeepMap(Map dataObject);
     private AbstractResolverHelper mapListResolver;
 
-    public PathExtractorBase(){
+    public PathExtractorBase() {
 
     }
 
-    protected void init(){
-        handlerBarRenderer  = new HandlerBarRenderer();
-        if (null!=handlebarsHelpers()){
-            for(String name: handlebarsHelpers().keySet()) {
+    protected void init() {
+        handlerBarRenderer = new HandlerBarRenderer();
+        if (null != handlebarsHelpers()) {
+            for (String name : handlebarsHelpers().keySet()) {
                 handlerBarRenderer.registerHelper(name, handlebarsHelpers().get(name));
             }
         }
